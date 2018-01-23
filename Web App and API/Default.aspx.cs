@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -36,8 +37,13 @@ namespace Web_App_and_API
                 var httpResp = (HttpWebResponse)httpWR.GetResponse();
                 using(var streamReader = new StreamReader(httpResp.GetResponseStream()))
                 {
-                    var result = streamReader.ReadToEnd();
-                    this.txt_result.Text = $"Results for {address} : {result}";
+                    string temp = streamReader.ReadToEnd();
+                    var result = JsonConvert.DeserializeObject<dynamic>(temp);
+                    this.txt_result.Text = $"Results for {address} : " +
+                        $" - Country Description : {result.airQuality.quality.country_description}" +
+                        $" - Pollution : {result.airQuality.quality.dominant_polluant_description}" +
+                        $" - Weather Description : {result.weatherInfo.weather.data.current_condition[0].weatherDesc[0].value}" +
+                        $" - Wind : {result.weatherInfo.weather.data.current_condition[0].windspeedKmph}";
                 }
             }
             catch(Exception exception)
