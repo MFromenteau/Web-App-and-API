@@ -13,5 +13,20 @@ namespace Web_App_and_API
         {
 
         }
+
+        protected void btn_send_Click(object sender, EventArgs e)
+        {
+            string address;
+
+            try
+            {
+                address = this.txt_address.Text;
+                this.txt_result.Text = $"Results for {address}";
+            }
+            catch(Exception exception)
+            {
+                this.txt_result.Text = exception.ToString();
+            }
+        }
     }
 }
